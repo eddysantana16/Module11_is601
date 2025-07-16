@@ -15,28 +15,28 @@ This project is a secure and testable FastAPI application that performs calculat
 
 ## Project Structure
 - module11/
-├── app/
-│   ├── __init__.py
-│   ├── main.py
-│   ├── models/
-│   │   └── calculation.py
-│   ├── schemas/
-│   │   └── calculation.py
-│   ├── services/
-│   │   └── calculation_factory.py 
-│   │   └── session.py
-│   └── tests/
-│       ├── test_unit/
-│       │   └── test_factory.py
-│       └── test_integration/
-│           └── test_calculation.py
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-├── docker-compose.yml
-├── Dockerfile
-├── requirements.txt
-├── README.md
+- ├── app/
+- │   ├── __init__.py
+- │   ├── main.py
+- │   ├── models/
+- │   │   └── calculation.py
+- │   ├── schemas/
+- │   │   └── calculation.py
+- │   ├── services/
+- │   │   └── calculation_factory.py 
+- │   │   └── session.py
+- │   └── tests/
+- │       ├── test_unit/
+- │       │   └── test_factory.py
+- │       └── test_integration/
+- │           └── test_calculation.py
+- ├── .github/
+- │   └── workflows/
+- │       └── ci.yml
+- ├── docker-compose.yml
+- ├── Dockerfile
+- ├── requirements.txt
+- ├── README.md
 
 ## Getting Started
 
