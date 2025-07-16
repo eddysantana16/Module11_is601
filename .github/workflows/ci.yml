@@ -1,25 +1,34 @@
-name: CI/CD Pipeline
+name: Build, Test, and Deploy Module 11 FastAPI App
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
-
-env:
-  DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/module11-fastapi
-  PYTHON_VERSION: "3.11"
+    branches:
+      - main
 
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
+
+    env:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: calculator_db
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      GITHUB_ACTIONS: true
+      DOCKER_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/module11-fastapi
+      PYTHON_VERSION: "3.11"
+
     services:
       postgres:
         image: postgres:15
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: test_db
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: calculator_db
         ports:
           - 5432:5432
         options: >-
@@ -29,7 +38,7 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Python ${{ env.PYTHON_VERSION }}
@@ -42,19 +51,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=." >> $GITHUB_ENV
+      - name: Run tests with pytest
+        run: |
+          pytest
 
-      - name: Run tests
-        run: pytest
-
-      - name: Log in to Docker Hub
+      - name: Log in to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push Docker Image
-        run: |
-          docker build -t $DOCKER_IMAGE .
-          docker push $DOCKER_IMAGE
+      - name: Build Docker image
+        run: docker build -t $DOCKER_IMAGE .
+
+      - name: Push Docker image
+        run: docker push $DOCKER_IMAGE
