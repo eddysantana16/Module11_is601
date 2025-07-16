@@ -5,8 +5,8 @@ from app.database.session import Base
 from app.schemas.calculation import CalculationCreate, CalculationType
 from app.crud.calculation import create_calculation, get_calculation_by_id
 
-# Match your exposed Docker port (5432 or 5433)
-DATABASE_URL = "postgresql://postgres:postgres@localhost:5433/calculator_db"
+# Match your exposed Docker port 5432
+DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/calculator_db"
 
 engine = create_engine(DATABASE_URL)
 TestingSessionLocal = sessionmaker(bind=engine)
